@@ -19,11 +19,13 @@ RUN bitnami-pkg unpack wordpress-5.4.2-12 --checksum ee1a3deadde9c96c7a3225d6aff
 RUN bitnami-pkg install tini-0.19.0-0 --checksum 9a8ae20be31a518f042fcec359f2cf35bfdb4e2a56f2fa8ff9ef2ecaf45da80c
 RUN bitnami-pkg install gosu-1.12.0-1 --checksum 51cfb1b7fd7b05b8abd1df0278c698103a9b1a4964bdacd87ca1d5c01631d59c
 RUN apt-get update && apt-get upgrade -y && \
-    rm -r /var/lib/apt/lists /var/cache/apt/archives
+    rm -r /var/lib/apt/lists /var/cache/apt/archives /opt/bitnami/wordpress/wp-content
 RUN ln -sf /dev/stdout /opt/bitnami/apache/logs/access_log && \
     ln -sf /dev/stderr /opt/bitnami/apache/logs/error_log
 
 COPY rootfs /
+RUN bash download-extra.sh
+
 ENV ALLOW_EMPTY_PASSWORD="no" \
     APACHE_ENABLE_CUSTOM_PORTS="no" \
     APACHE_HTTPS_PORT_NUMBER="8443" \
@@ -34,10 +36,10 @@ ENV ALLOW_EMPTY_PASSWORD="no" \
     MARIADB_PORT_NUMBER="3306" \
     MARIADB_ROOT_PASSWORD="" \
     MARIADB_ROOT_USER="root" \
-    MYSQL_CLIENT_CREATE_DATABASE_NAME="" \
-    MYSQL_CLIENT_CREATE_DATABASE_PASSWORD="" \
+    MYSQL_CLIENT_CREATE_DATABASE_NAME="fullstacknetwork" \
+    MYSQL_CLIENT_CREATE_DATABASE_PASSWORD="Starwind1" \
     MYSQL_CLIENT_CREATE_DATABASE_PRIVILEGES="ALL" \
-    MYSQL_CLIENT_CREATE_DATABASE_USER="" \
+    MYSQL_CLIENT_CREATE_DATABASE_USER="root" \
     MYSQL_CLIENT_ENABLE_SSL="no" \
     MYSQL_CLIENT_SSL_CA_FILE="" \
     NAMI_PREFIX="/.nami" \
@@ -52,27 +54,30 @@ ENV ALLOW_EMPTY_PASSWORD="no" \
     SMTP_USER="" \
     SMTP_USERNAME="" \
     WORDPRESS_BLOG_NAME="User's Blog!" \
-    WORDPRESS_DATABASE_NAME="bitnami_wordpress" \
-    WORDPRESS_DATABASE_PASSWORD="" \
+    WORDPRESS_DATABASE_NAME="fullstacknetwork" \
+    WORDPRESS_DATABASE_PASSWORD="Starwind1" \
     WORDPRESS_DATABASE_SSL_CA_FILE="" \
-    WORDPRESS_DATABASE_USER="bn_wordpress" \
-    WORDPRESS_EMAIL="user@example.com" \
+    WORDPRESS_DATABASE_USER="root" \
+    WORDPRESS_EMAIL="darriush@mail.usf.edu" \
     WORDPRESS_EXTRA_WP_CONFIG_CONTENT="" \
-    WORDPRESS_FIRST_NAME="FirstName" \
+    WORDPRESS_FIRST_NAME="Darrius" \
     WORDPRESS_HTACCESS_OVERRIDE_NONE="yes" \
     WORDPRESS_HTACCESS_PERSISTENCE_ENABLED="no" \
     WORDPRESS_HTTPS_PORT="8443" \
     WORDPRESS_HTTP_PORT="8080" \
-    WORDPRESS_LAST_NAME="LastName" \
-    WORDPRESS_PASSWORD="bitnami" \
+    WORDPRESS_LAST_NAME="Alexander" \
+    WORDPRESS_PASSWORD="Starwind1" \
     WORDPRESS_RESET_DATA_PERMISSIONS="no" \
     WORDPRESS_SCHEME="http" \
     WORDPRESS_SKIP_INSTALL="no" \
     WORDPRESS_TABLE_PREFIX="wp_" \
     WORDPRESS_USERNAME="user"
 
+   
 EXPOSE 8080 8443
 
 USER 1001
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "httpd", "-f", "/opt/bitnami/apache/conf/httpd.conf", "-DFOREGROUND" ]
+
+
